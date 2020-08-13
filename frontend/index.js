@@ -153,3 +153,4 @@ document.addEventListener('DOMContentLoaded', () => {
     itemForm.addEventListener('submit', handleFormSubmit)
     itemList.addEventListener('click', handleClick)
 })
+
