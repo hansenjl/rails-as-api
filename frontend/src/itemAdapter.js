@@ -49,8 +49,8 @@ class ItemAdapter{
         }
 
         fetch(`http://localhost:3000/items/${itemId}`, configObj)
-        .then(res => res.json())
-        .then(response => this.updateDom(response.data))
+        // .then(res => res.json())
+        // .then(response => this.updateDom(response.data))
         // remove form
         const form = document.getElementById(`update-form-${itemId}`)
         form.remove()
@@ -58,10 +58,9 @@ class ItemAdapter{
     }
 
     updateDom(itemData){
+        debugger
         const item = Item.findById(itemData.id)
-        item.name = itemData.attributes.name
-        item.description = itemData.attributes.description
-        item.price = itemData.attributes.price
+        item.updateAttributes(itemData.attributes)
         item.fullRender()
     }
 
@@ -78,10 +77,10 @@ class ItemAdapter{
 
         //pessimistic rendering
         fetch('http://localhost:3000/items', configObj)
-        .then(res => res.json())
-        .then(json => {
-            this.sanitizeAndAddItem(json.data)
-        })
+        // .then(res => res.json())
+        // .then(json => {
+        //     this.sanitizeAndAddItem(json.data)
+        // })
     }
 
     sanitizeAndAddItem(itemObj){

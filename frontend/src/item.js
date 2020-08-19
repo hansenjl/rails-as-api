@@ -2,7 +2,7 @@ class Item {
     static all = []
 
     constructor({id,price,name,description, categoryId}){
-        this.id = id
+        this.id = id.toString()
         this.price = price
         this.name = name
         this.description = description
@@ -72,6 +72,12 @@ class Item {
             <button class="update" data-id="${this.id}">Update</button>
         `
         return this.element
+    }
+
+    updateAttributes = ({name, description, price}) => {
+        this.name = name
+        this.description = description
+        this.price = price
     }
 }
 

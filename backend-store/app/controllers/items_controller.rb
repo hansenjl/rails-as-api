@@ -14,7 +14,9 @@ class ItemsController < ApplicationController
         item = Item.new(item_params)
         item.category_id = 1
         if item.save
-            render json: ItemSerializer.new(item)
+            # render json: ItemSerializer.new(item)
+            ActionCable.server.broadcast("items", message: 'create',item: item)
+            # ItemChannel.broadcast_to("items", item)
         else
             render json: {error: 'could not be created'}
         end
@@ -29,7 +31,9 @@ class ItemsController < ApplicationController
     def update
         item = Item.find(params[:id])
         item.update(item_params)
-        render json: ItemSerializer.new(item)
+        # render json: ItemSerializer.new(item)
+        ActionCable.server.broadcast("items", message: 'update',item: item)
+
     end
 
 
