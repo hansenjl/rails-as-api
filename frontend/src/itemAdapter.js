@@ -27,6 +27,44 @@ class ItemAdapter{
         Item.all = Item.all.filter((i)=> i.id !== id)
     }
 
+    sendPatchRequest(itemId){
+        const price = document.getElementById(`update-price-${itemId}`).value
+        const description = document.getElementById(`update-description-${itemId}`).value
+        const name = document.getElementById(`update-name-${itemId}`).value
+
+
+        let itemObj = {
+            name,
+            description,
+            price
+        }
+
+        let configObj = {
+            method: 'PATCH',
+            headers: {
+                "Content-Type": "application/json",
+                "Accepts": "application/json"
+            },
+            body: JSON.stringify(itemObj)
+        }
+
+        fetch(`http://localhost:3000/items/${itemId}`, configObj)
+        .then(res => res.json())
+        .then(response => this.updateDom(response.data))
+        // remove form
+        const form = document.getElementById(`update-form-${itemId}`)
+        form.remove()
+
+    }
+
+    updateDom(itemData){
+        const item = Item.findById(itemData.id)
+        item.name = itemData.attributes.name
+        item.description = itemData.attributes.description
+        item.price = itemData.attributes.price
+        item.fullRender()
+    }
+
 
     newItem(newItemObj){
         let configObj = {
@@ -44,7 +82,6 @@ class ItemAdapter{
         .then(json => {
             this.sanitizeAndAddItem(json.data)
         })
-
     }
 
     sanitizeAndAddItem(itemObj){

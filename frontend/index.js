@@ -16,29 +16,16 @@ function handleFormSubmit(e){
     itemAdapter.newItem(newItemObj)
     itemForm.reset()
 }
+    
 
-function deleteItem(id){
-// remove from db
-    itemAdapter.deleteItem(id)
-// remove from dom
-// optimistic rendering
-    let item = document.getElementById(`item-${id}`)
-    item.remove()
-}
 
-function handleListClick(e){
-   if (e.target.className === "delete"){
-       let id = e.target.dataset.id
-        deleteItem(id)
-   }
-}
 
 
 document.addEventListener('DOMContentLoaded', () => {
     const itemForm = document.getElementById('item-form')
-    const itemList = document.getElementById('item-list')
+    // const itemList = document.getElementById('item-list')
     // fetchItems()
     itemAdapter.fetchItems()
     itemForm.addEventListener('submit', handleFormSubmit)
-    itemList.addEventListener('click', handleListClick)
+
 })
