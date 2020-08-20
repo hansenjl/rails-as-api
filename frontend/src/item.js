@@ -4,30 +4,50 @@ class Item{
 
     static all = []
 
-    constructor({name, description, price, id}){
+    constructor({name, description, price, id, category_id}){
         this.name = name
         this.description = description
         this.price = price
         this.id = id
+        this.category_id = category_id
 
         this.element = document.createElement('div')
         this.element.id = `item-${this.id}`
-        this.itemList = document.getElementById('item-list')
-        this.element.addEventListener('click', this.handleListClick)
+
+        // this.element.addEventListener('click', this.handleListClick)
 
         Item.all.push(this)
+    }
+
+    get category(){
+        return Category.all.find((cat) => cat.id == this.category_id)
+    }
+
+
+    get itemList(){
+       return  document.getElementById('item-list')
+    }
+
+    addEventListeners(){
+        this.element.addEventListener('click', this.handleListClick)
+    }
+
+
+    static findById(id){
+       return Item.all.find((item) => item.id == id)
     }
 
     handleListClick = (e) => {
 
         if (e.target.className === "delete"){
             let id = e.target.dataset.id
-             deleteItem(id)
+             itemsAdapter.deleteItem(id)
+             this.element.remove() // optimistic rendering
         } else if(e.target.className === 'update'){
              let itemId = e.target.dataset.id
              e.target.className = "save"
              e.target.innerText = "Save"
-             addUpdateItemFields(itemId)
+             this.addUpdateItemFields(itemId)
          } else if(e.target.className === 'save'){
              let itemId = e.target.dataset.id
              e.target.className = "update"
@@ -38,6 +58,7 @@ class Item{
 
     attachToDom(){
         this.itemList.append(this.fullRender())
+        this.addEventListeners()
     }
 
     fullRender(){
@@ -60,6 +81,22 @@ class Item{
         this.description = description
         this.name = name
         this.fullRender()
+    }
+
+    addUpdateItemFields(itemId){
+        let item = Item.findById(itemId)
+        // let item = document.querySelector(`#item-${itemId} li`)
+
+        let updateForm = `
+        <input type="number" value="${item.price}" name="price" id="update-price-${itemId}" min="0" step=".01">
+        <input type="text" name="name" value="${item.name}" id="update-name-${itemId}">
+        <input type="text" name="description" value="${item.description}" id="update-description-${itemId}">
+        `
+
+        let formDiv = document.createElement('div')
+        formDiv.id = `update-form-${itemId}`
+        formDiv.innerHTML = updateForm
+        item.element.querySelector('li').append(formDiv)
     }
 
 
