@@ -17,13 +17,13 @@ class Item {
     }
 
     static findById(id){
-        return Item.all.find((item) => item.id === id)
+        return Item.all.find((item) => item.id == id)
     }
 
     handleClick = (e)=> {
         if (e.target.className === "delete"){
             let id = e.target.dataset.id
-            this.element.remove()
+            // this.element.remove()
             itemAdapter.deleteItem(id)
         } else if(e.target.className === 'update'){
             // let itemId = e.target.dataset.id

@@ -14,7 +14,8 @@ class ItemsController < ApplicationController
         item = Item.new(item_params)
         item.category_id = 1
         if item.save
-            render json: ItemSerializer.new(item)
+            # render json: ItemSerializer.new(item)
+            ActionCable.server.broadcast("items", item: ItemSerializer.new(item), type: 'create' )
         else
             render json: {error: 'could not be created'}
         end
@@ -23,6 +24,7 @@ class ItemsController < ApplicationController
     def destroy
         item = Item.find(params[:id])
         item.destroy
+        ActionCable.server.broadcast("items", id: item.id, type: "destroy")
         render json: {message: "Successfully deleted #{item.name}!"}
     end
 

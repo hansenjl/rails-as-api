@@ -24,7 +24,7 @@ class ItemAdapter{
             .then(res => res.json())
             .then(json => alert(json.message))
 
-        Item.all = Item.all.filter((i)=> i.id !== id)
+       
     }
 
     sendPatchRequest(itemId){
@@ -78,10 +78,10 @@ class ItemAdapter{
 
         //pessimistic rendering
         fetch('http://localhost:3000/items', configObj)
-        .then(res => res.json())
-        .then(json => {
-            this.sanitizeAndAddItem(json.data)
-        })
+        // .then(res => res.json())
+        // .then(json => {
+        //     this.sanitizeAndAddItem(json.data)
+        // })
     }
 
     sanitizeAndAddItem(itemObj){
