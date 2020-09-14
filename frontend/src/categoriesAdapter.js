@@ -1,6 +1,6 @@
 class CategoriesAdapter{
     constructor(){
-        this.baseUrl = "http://localhost:3000/categories"
+        this.baseUrl = "https://js-backend-may4.herokuapp.com/categories"
     }
 
     // GET

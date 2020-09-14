@@ -7,8 +7,21 @@ class Category{
         this.element = document.createElement('li')
         this.element.id = `category-${id}`
         this.categoryList = document.getElementById('category-list')
+        this.sorted = false
 
         Category.all.push(this)
+    }
+
+    static find(id){
+        return Category.all.find(c => c.id == id)
+    }
+
+    // static findOrCreate(catData){
+    //     return this.find(catData.id) ? this.find(catData.id) : new Category(catData)
+    // }
+
+    sortedItems(){
+        return this.items().sort((a,b) => a.price - b.price )
     }
 
     // get categoryList(){
@@ -36,10 +49,24 @@ class Category{
     }
 
     displayItems = () => {
-        document.getElementById('item-list').innerHTML = ``
-        this.items().forEach((i)=>{
+
+        currentCategory = this
+        const itemList = document.getElementById('item-list')
+        itemList.innerHTML = ``
+        let items = this.sorted ? this.sortedItems() : this.items()
+        items.forEach((i)=>{
             i.attachToDom()
         })
+        const sortBtn = document.createElement("button")
+        sortBtn.id = `sort-${this.id}`
+        sortBtn.textContent = "SORT"
+        itemList.append(sortBtn)
+        sortBtn.addEventListener('click', (e)=>{
+            this.sorted = !this.sorted
+            this.displayItems()
+        })
+
     }
+
 
 }
